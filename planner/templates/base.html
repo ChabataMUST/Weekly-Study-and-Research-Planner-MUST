@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Weekly Planner{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}"></head>
+<body>
+<header><a class="brand" href="{{ url_for('index') }}"><span class="logo">W</span>Weekly Planner</a>
+<nav aria-label="Main navigation"><a href="{{ url_for('index') }}">My week</a><a href="{{ url_for('import_file') }}">Import timetable</a></nav>
+<span class="tag">Weeks 1–2 prototype</span></header>
+<main>{% for message in get_flashed_messages() %}<div class="notice" role="status">{{ message }}</div>{% endfor %}
+{% block content %}{% endblock %}</main>
+<footer>ChabataMUST · Local demonstration · Records stay in this computer's database. Multi-user accounts are planned for a later milestone.</footer>
+</body></html>

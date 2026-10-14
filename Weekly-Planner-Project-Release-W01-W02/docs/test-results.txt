@@ -1,0 +1,29 @@
+﻿Release validation: 2026-10-14
+Python: 3.13.9
+Command: python -m unittest discover -s tests -v
+
+test_empty_unknown_and_oversized_csv_rejected (test_milestone.MilestoneTests.test_empty_unknown_and_oversized_csv_rejected) ... ok
+test_empty_week_pdf (test_milestone.MilestoneTests.test_empty_week_pdf) ... ok
+test_failed_batch_rolls_back_all_rows (test_milestone.MilestoneTests.test_failed_batch_rolls_back_all_rows) ... ok
+test_form_forgery_rejected (test_milestone.MilestoneTests.test_form_forgery_rejected) ... ok
+test_http_upload_confirm_and_one_time_preview (test_milestone.MilestoneTests.test_http_upload_confirm_and_one_time_preview) ... ok
+test_invalid_batch_keeps_existing_timetable (test_milestone.MilestoneTests.test_invalid_batch_keeps_existing_timetable) ... ok
+test_invalid_dates_times_and_duplicate_keys_rejected (test_milestone.MilestoneTests.test_invalid_dates_times_and_duplicate_keys_rejected) ... ok
+test_long_pdf_preserves_last_record (test_milestone.MilestoneTests.test_long_pdf_preserves_last_record) ... ok
+test_missing_rows_are_not_deleted (test_milestone.MilestoneTests.test_missing_rows_are_not_deleted) ... ok
+test_note_text_is_escaped_in_html_and_invalid_link_rejected (test_milestone.MilestoneTests.test_note_text_is_escaped_in_html_and_invalid_link_rejected) ... ok
+test_observed_source_matches_checked_event (test_milestone.MilestoneTests.test_observed_source_matches_checked_event) ... ok
+test_pdf_selection_and_frozen_versions (test_milestone.MilestoneTests.test_pdf_selection_and_frozen_versions) ... ok
+test_preview_does_not_save_classes_and_cancel_is_safe (test_milestone.MilestoneTests.test_preview_does_not_save_classes_and_cancel_is_safe) ... ok
+test_reimport_is_idempotent (test_milestone.MilestoneTests.test_reimport_is_idempotent) ... ok
+test_report_cannot_include_record_from_another_week (test_milestone.MilestoneTests.test_report_cannot_include_record_from_another_week) ... ok
+test_saved_data_survives_app_recreation (test_milestone.MilestoneTests.test_saved_data_survives_app_recreation) ... ok
+test_stale_preview_cannot_overwrite_newer_timetable (test_milestone.MilestoneTests.test_stale_preview_cannot_overwrite_newer_timetable) ... ok
+test_update_preserves_note_link_and_identity (test_milestone.MilestoneTests.test_update_preserves_note_link_and_identity) ... ok
+test_utf8_bom_and_optional_columns (test_milestone.MilestoneTests.test_utf8_bom_and_optional_columns) ... ok
+test_week_boundaries_and_research_without_courses (test_milestone.MilestoneTests.test_week_boundaries_and_research_without_courses) ... ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 0.952s
+
+OK

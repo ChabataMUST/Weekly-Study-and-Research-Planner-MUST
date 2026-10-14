@@ -1,0 +1,6 @@
+source_key,course_code,course_title,date,start_time,end_time,room,teacher
+demo-se-001,DEMO-SE,Software Engineering,2026-09-28,09:00,11:00,Demo room A2,
+demo-math-001,DEMO-MATH,Linear Algebra,2026-09-29,15:30,17:00,Demo room B,
+demo-net-001,DEMO-NET,Computer Networks,2026-09-30,09:00,11:50,Demo room C,
+demo-se-002,DEMO-SE,Software Engineering,2026-10-02,14:00,16:00,Demo room A,
+demo-se-003,DEMO-SE,Software Engineering,2026-10-05,09:00,11:00,Demo room A,
