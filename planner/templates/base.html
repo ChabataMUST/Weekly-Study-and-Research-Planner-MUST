@@ -5,9 +5,19 @@
 <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}"></head>
 <body>
 <header><a class="brand" href="{{ url_for('index') }}"><span class="logo">W</span>Weekly Planner</a>
+{% if current_username %}
 <nav aria-label="Main navigation"><a href="{{ url_for('index') }}">My week</a><a href="{{ url_for('import_file') }}">Import timetable</a></nav>
-<span class="tag">Weeks 1–2 prototype</span></header>
+<form method="post" action="{{ url_for('logout') }}" class="signout">
+<input type="hidden" name="csrf" value="{{ session.csrf }}">
+<span class="who" aria-label="Signed in as {{ current_username }}">{{ current_username }}</span>
+<button class="linklike" type="submit">Sign out</button>
+</form>
+{% else %}
+<nav aria-label="Main navigation"><a href="{{ url_for('login') }}">Sign in</a><a href="{{ url_for('register') }}">Create account</a></nav>
+{% endif %}
+</header>
 <main>{% for message in get_flashed_messages() %}<div class="notice" role="status">{{ message }}</div>{% endfor %}
+{% for warning in migration_warnings %}<div class="notice warning" role="status">{{ warning }}</div>{% endfor %}
 {% block content %}{% endblock %}</main>
-<footer>ChabataMUST · Local demonstration · Records stay in this computer's database. Multi-user accounts are planned for a later milestone.</footer>
+<footer>ChabataMUST · Local demonstration · Records are private to each signed-in account and stay in this computer's database.</footer>
 </body></html>
