@@ -1,29 +1,69 @@
-﻿Release validation: 2026-10-14
-Python: 3.13.9
-Command: python -m unittest discover -s tests -v
-
-test_empty_unknown_and_oversized_csv_rejected (test_milestone.MilestoneTests.test_empty_unknown_and_oversized_csv_rejected) ... ok
+﻿Test run: 2026-10-18
+Environment: Windows 11, Python 3.14.6, Flask 3.1.2, ReportLab 4.4.9, pypdf 6.10.0
+Command: .venv\Scripts\python.exe -m unittest discover -s tests -v
+Tests use temporary databases and do not touch instance/ data.
+python.exe : test_cancelled_class_state_survives_reimport (test_milestone.MilestoneTests.test_cancelled_class_state_sur
+vives_reimport) ... ok
+所在位置 行:6 字符: 8
++ $out = & $venvPy -m unittest discover -s tests -v 2>&1 | Out-String
++        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (test_cancelled_...eimport) ... ok:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+test_cross_account_preview_token_rejected (test_milestone.MilestoneTests.test_cross_account_preview_token_rejected) ...
+ ok
+test_duplicate_username_rejected_case_insensitively (test_milestone.MilestoneTests.test_duplicate_username_rejected_cas
+e_insensitively) ... ok
+test_empty_unknown_and_oversized_csv_rejected (test_milestone.MilestoneTests.test_empty_unknown_and_oversized_csv_rejec
+ted) ... ok
 test_empty_week_pdf (test_milestone.MilestoneTests.test_empty_week_pdf) ... ok
+test_event_change_history_records_previous_values (test_milestone.MilestoneTests.test_event_change_history_records_prev
+ious_values) ... ok
 test_failed_batch_rolls_back_all_rows (test_milestone.MilestoneTests.test_failed_batch_rolls_back_all_rows) ... ok
+test_first_registration_adopts_legacy_data (test_milestone.MilestoneTests.test_first_registration_adopts_legacy_data) .
+.. ok
 test_form_forgery_rejected (test_milestone.MilestoneTests.test_form_forgery_rejected) ... ok
-test_http_upload_confirm_and_one_time_preview (test_milestone.MilestoneTests.test_http_upload_confirm_and_one_time_preview) ... ok
-test_invalid_batch_keeps_existing_timetable (test_milestone.MilestoneTests.test_invalid_batch_keeps_existing_timetable) ... ok
-test_invalid_dates_times_and_duplicate_keys_rejected (test_milestone.MilestoneTests.test_invalid_dates_times_and_duplicate_keys_rejected) ... ok
+test_http_upload_confirm_and_one_time_preview (test_milestone.MilestoneTests.test_http_upload_confirm_and_one_time_prev
+iew) ... ok
+test_invalid_batch_keeps_existing_timetable (test_milestone.MilestoneTests.test_invalid_batch_keeps_existing_timetable)
+ ... ok
+test_invalid_dates_times_and_duplicate_keys_rejected (test_milestone.MilestoneTests.test_invalid_dates_times_and_duplic
+ate_keys_rejected) ... ok
+test_logout_then_access_blocked (test_milestone.MilestoneTests.test_logout_then_access_blocked) ... ok
 test_long_pdf_preserves_last_record (test_milestone.MilestoneTests.test_long_pdf_preserves_last_record) ... ok
 test_missing_rows_are_not_deleted (test_milestone.MilestoneTests.test_missing_rows_are_not_deleted) ... ok
-test_note_text_is_escaped_in_html_and_invalid_link_rejected (test_milestone.MilestoneTests.test_note_text_is_escaped_in_html_and_invalid_link_rejected) ... ok
-test_observed_source_matches_checked_event (test_milestone.MilestoneTests.test_observed_source_matches_checked_event) ... ok
+test_note_text_is_escaped_in_html_and_invalid_link_rejected (test_milestone.MilestoneTests.test_note_text_is_escaped_in
+_html_and_invalid_link_rejected) ... ok
+test_observed_source_matches_checked_event (test_milestone.MilestoneTests.test_observed_source_matches_checked_event) .
+.. ok
+test_one_course_code_with_two_titles_rejected (test_milestone.MilestoneTests.test_one_course_code_with_two_titles_rejec
+ted) ... ok
+test_password_not_stored_as_plaintext (test_milestone.MilestoneTests.test_password_not_stored_as_plaintext) ... ok
 test_pdf_selection_and_frozen_versions (test_milestone.MilestoneTests.test_pdf_selection_and_frozen_versions) ... ok
-test_preview_does_not_save_classes_and_cancel_is_safe (test_milestone.MilestoneTests.test_preview_does_not_save_classes_and_cancel_is_safe) ... ok
+test_preview_does_not_save_classes_and_cancel_is_safe (test_milestone.MilestoneTests.test_preview_does_not_save_classes
+_and_cancel_is_safe) ... ok
 test_reimport_is_idempotent (test_milestone.MilestoneTests.test_reimport_is_idempotent) ... ok
-test_report_cannot_include_record_from_another_week (test_milestone.MilestoneTests.test_report_cannot_include_record_from_another_week) ... ok
+test_report_cannot_include_record_from_another_week (test_milestone.MilestoneTests.test_report_cannot_include_record_fr
+om_another_week) ... ok
+test_report_download_is_owner_scoped (test_milestone.MilestoneTests.test_report_download_is_owner_scoped) ... ok
+test_revisions_are_per_account (test_milestone.MilestoneTests.test_revisions_are_per_account) ... ok
 test_saved_data_survives_app_recreation (test_milestone.MilestoneTests.test_saved_data_survives_app_recreation) ... ok
-test_stale_preview_cannot_overwrite_newer_timetable (test_milestone.MilestoneTests.test_stale_preview_cannot_overwrite_newer_timetable) ... ok
-test_update_preserves_note_link_and_identity (test_milestone.MilestoneTests.test_update_preserves_note_link_and_identity) ... ok
+test_stale_preview_cannot_overwrite_newer_timetable (test_milestone.MilestoneTests.test_stale_preview_cannot_overwrite_
+newer_timetable) ... ok
+test_two_accounts_can_import_the_same_source_keys (test_milestone.MilestoneTests.test_two_accounts_can_import_the_same_
+source_keys) ... ok
+test_unauthenticated_access_redirects_to_login (test_milestone.MilestoneTests.test_unauthenticated_access_redirects_to_
+login) ... ok
+test_update_preserves_note_link_and_identity (test_milestone.MilestoneTests.test_update_preserves_note_link_and_identit
+y) ... ok
 test_utf8_bom_and_optional_columns (test_milestone.MilestoneTests.test_utf8_bom_and_optional_columns) ... ok
-test_week_boundaries_and_research_without_courses (test_milestone.MilestoneTests.test_week_boundaries_and_research_without_courses) ... ok
+test_v1_database_is_migrated_with_data_intact (test_milestone.MilestoneTests.test_v1_database_is_migrated_with_data_int
+act) ... ok
+test_week_boundaries_and_research_without_courses (test_milestone.MilestoneTests.test_week_boundaries_and_research_with
+out_courses) ... ok
 
 ----------------------------------------------------------------------
-Ran 20 tests in 0.952s
+Ran 33 tests in 37.192s
 
 OK
+

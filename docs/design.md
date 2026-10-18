@@ -1,10 +1,10 @@
 # Initial design and screen flow
 
-## Why this prototype uses a small Python application
+## Why this application uses a small Python stack
 
-Our immediate uncertainty is whether the selected timetable input and PDF output can work together. Flask handles forms and pages, SQLite persists the small local data set, and ReportLab generates PDFs. There is no JavaScript build tool or external service account to configure. This keeps the Week 2 demonstration reproducible while leaving the course, task and account models for the next stage.
+The immediate uncertainty in Week 1 was whether the selected timetable input and PDF output could work together. Flask handles forms and pages, SQLite persists the local data set, and ReportLab generates PDFs. There is no JavaScript build tool or external service account to configure. This keeps each milestone reproducible while the record models grow.
 
-The first implementation is deliberately a single local profile. Private multi-user accounts in the Task 2 specification are still required for the final product. Form tokens and HTML escaping are already present, but they do not make this prototype a complete account-isolated service.
+Week 3 replaced the single local profile with account ownership. Every record now carries an `owner_id`, and each query filters by it, so one account cannot read another's records even by requesting an identifier directly (Task 2 REQ-1.1, NFR-S1). Form tokens and HTML escaping were present from Week 2; account isolation is what Week 3 adds on top of them.
 
 ## Screen flow
 
@@ -25,38 +25,91 @@ flowchart LR
 
 The week view shows dated occurrences, saved learning records and a simple count of completion labels. A record can exist without a linked class so that a student with research work and no courses can use the same page. The count is not a weighted workload or academic performance score.
 
-## Prototype data model
+## Data model (Week 3)
+
+Account ownership came first because revisions and resource retrieval both need a
+reliable parent record. A student owns courses and projects; classes, notes,
+reports and previews all belong to the student through `owner_id`.
 
 ```mermaid
 erDiagram
+    USER ||--o{ COURSE : owns
+    USER ||--o{ PROJECT : owns
+    USER ||--|| USER_STATE : has
+    COURSE ||--o{ EVENT : contains
+    COURSE ||--o{ ITEM : may_contain
+    PROJECT ||--o{ ITEM : may_contain
+    EVENT ||--o{ EVENT_CHANGE : records_changes
+    COURSE ||--o{ NOTE : files
+    PROJECT ||--o{ NOTE : files
+    ITEM ||--o{ NOTE : files
     EVENT ||--o{ NOTE : optionally_links
+    USER {
+        integer id PK
+        string username UK
+        string password_hash
+    }
+    USER_STATE {
+        integer owner_id PK
+        integer timetable_revision
+    }
+    COURSE {
+        integer id PK
+        integer owner_id FK
+        string code
+        string title
+    }
+    PROJECT {
+        integer id PK
+        integer owner_id FK
+        string title
+    }
+    ITEM {
+        integer id PK
+        integer owner_id FK
+        string kind
+        integer course_id FK
+        integer project_id FK
+        string title
+        string official_due
+    }
     EVENT {
-        string source_key PK
-        string course_code
-        string course_title
+        integer id PK
+        integer owner_id FK
+        integer course_id FK
+        string source_key
         string date
         string start_time
         string end_time
         string room
         string teacher
+        string state
     }
     NOTE {
         integer id PK
+        integer owner_id FK
+        integer course_id FK
+        integer project_id FK
+        integer item_id FK
+        integer event_id FK
         string date
         string kind
-        string context
         string title
         string body
         string status
-        string event_key FK
     }
-    PREVIEW {
-        string token PK
-        string rows_json
-        integer revision
+    EVENT_CHANGE {
+        integer id PK
+        integer owner_id FK
+        integer event_id FK
+        string change_state
+        string previous_json
+        string current_json
+        string confirmed_at
     }
     REPORT {
         integer id PK
+        integer owner_id FK
         string week
         string title
         string snapshot_json
@@ -64,9 +117,13 @@ erDiagram
     }
 ```
 
-`event_key` is optional. Notes keep their own record date even when the linked class moves; moving a class does not rewrite the date on which a note was made. A report holds selected record values rather than live foreign-key views, so re-opening a stored PDF reproduces the earlier export.
+Three decisions are worth calling out because they are easy to undo by accident:
 
-The schema also stores an import-batch count and one timetable revision counter. All classes in a batch are saved in one transaction. Updates use SQL UPDATE rather than deletion/reinsertion to retain identity and note links. Preview tokens are single-use and checked against the current revision before saving.
+- **`events.source_key` is unique per owner, not globally.** The surrogate `id` is the occurrence's identity. Two accounts can each import `demo-se-001`; they are two rows. An update uses `UPDATE` on the `id`, so notes linked through `event_id` keep pointing at the same class (REQ-1.3).
+- **`user_state.timetable_revision` is per account.** One student's import no longer invalidates another student's pending preview, and the stale-preview check still works within an account.
+- **`event_changes` stores previous and current values with a confirmation time** (Task 2 6.2.8). A confirmed change is written here as part of the same transaction as the `events` update. The `state` column (`scheduled`/`cancelled`) is excluded from import comparison, so reimporting a file does not silently un-cancel a class.
+
+A report holds selected record values rather than live foreign-key views, so re-opening a stored PDF reproduces the earlier export. `academic_items` is created in Week 3 but populated from Week 4, when requirement revisions need a stable parent to hang from.
 
 ## Representative examples
 
