@@ -40,7 +40,12 @@ def render_pdf(snapshot):
         p('Taught courses', 'heading')
         for event in snapshot['events']:
             room = f" ({event['room']})" if event['room'] else ''
-            p(f"{event['date']}  {event['start_time']}-{event['end_time']} | {event['course_title']}{room}")
+            # A cancelled class stays visible with its state, so the report does
+            # not imply work was planned for a slot that did not happen
+            # (Task 2 6.2.5).
+            cancelled = ' · cancelled' if event.get('state') == 'cancelled' else ''
+            p(f"{event['date']}  {event['start_time']}-{event['end_time']} | "
+              f"{event['course_title']}{room}{cancelled}")
     p('Selected learning records', 'heading')
     if not snapshot['notes']:
         p('No learning records were selected for this report.')

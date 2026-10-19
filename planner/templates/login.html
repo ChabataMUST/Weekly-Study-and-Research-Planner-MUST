@@ -1,0 +1,18 @@
+{% extends 'base.html' %}{% block title %}Sign in · Weekly Planner{% endblock %}
+{% block content %}<section class="panel narrow"><p class="eyebrow">PRIVATE WORKSPACE</p>
+<h1>Sign in</h1>
+<p class="subtitle">Each account keeps its own classes, records and reports.</p>
+{% if error %}<div class="notice" role="alert">{{ error }}</div>{% endif %}
+<form method="post">
+<input type="hidden" name="csrf" value="{{ session.csrf }}">
+<input type="hidden" name="next" value="{{ next_target }}">
+<label for="username">Username</label>
+<input id="username" name="username" value="{{ form.username }}" autocomplete="username"
+       maxlength="40" required autofocus>
+<label for="password">Password</label>
+<input id="password" name="password" type="password" autocomplete="current-password"
+       maxlength="200" required>
+<button class="wide">Sign in</button>
+</form>
+<p class="quiet">No account yet? <a href="{{ url_for('register') }}">Create one</a>. Records stay in this computer's database.</p>
+</section>{% endblock %}

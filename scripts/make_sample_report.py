@@ -14,9 +14,9 @@ ROOT=Path(__file__).resolve().parents[1]
 def main():
     with tempfile.TemporaryDirectory() as directory:
         app=create_app({'DATABASE':str(Path(directory)/'sample.sqlite3'),'SECRET_KEY':'temporary-sample-only'})
-        seed(app)
+        owner=seed(app)
         with connect(app.config['DATABASE']) as db:
-            start,end,events,notes=weekly_records(db,'2026-09-28')
+            start,end,events,notes=weekly_records(db,owner,'2026-09-28')
         snapshot={'week':str(start),'end':str(end),'title':'Sample weekly study and research report',
                   'summary':'Fictional demonstration. This week combines coursework requirements with a research meeting and reading notes. Next week: finish the report outline and check the experiment setup.',
                   'events':events,'notes':notes}

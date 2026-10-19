@@ -1,0 +1,21 @@
+{% extends 'base.html' %}{% block title %}Create account · Weekly Planner{% endblock %}
+{% block content %}<section class="panel narrow"><p class="eyebrow">PRIVATE WORKSPACE</p>
+<h1>Create an account</h1>
+<p class="subtitle">Choose a username of 3&ndash;40 characters and a password of at least 8. Your password is stored as a hash, never as text.</p>
+{% if error %}<div class="notice" role="alert">{{ error }}</div>{% endif %}
+<form method="post">
+<input type="hidden" name="csrf" value="{{ session.csrf }}">
+<label for="username">Username</label>
+<input id="username" name="username" value="{{ form.username }}" autocomplete="username"
+       maxlength="40" required autofocus>
+<p class="quiet">Letters, digits, dot, underscore or hyphen. Usernames are not case-sensitive.</p>
+<label for="password">Password</label>
+<input id="password" name="password" type="password" autocomplete="new-password"
+       minlength="8" maxlength="200" required>
+<label for="confirm">Repeat password</label>
+<input id="confirm" name="confirm" type="password" autocomplete="new-password" maxlength="200" required>
+<button class="wide">Create account</button>
+</form>
+<p class="quiet">Already registered? <a href="{{ url_for('login') }}">Sign in</a> instead.</p>
+{% if migration_warnings %}<p class="quiet">This computer held a single-profile database from an earlier version. Its records will move to the first account registered here.</p>{% endif %}
+</section>{% endblock %}
