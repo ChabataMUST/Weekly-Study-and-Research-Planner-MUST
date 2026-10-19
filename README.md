@@ -1,10 +1,16 @@
 # Weekly Study and Research Planner
 
+![Version](https://img.shields.io/badge/version-1.1.0-blue) ![Tests](https://img.shields.io/badge/tests-33%20passed-brightgreen)
+
 Software Engineering · Macau University of Science and Technology  
 Team: ChabataMUST · ZhaoYue (赵玥) and WangYule (王宇乐)  
 Milestone: Week 3 — account ownership, course/project records and data migration
 
 Repository: https://github.com/ChabataMUST/Weekly-Study-and-Research-Planner-MUST
+
+## What's new in v1.1.0
+
+Private accounts with per-account ownership on every query, real course and project entities replacing free-text labels, automatic migration from the Weeks 1–2 single-profile database, field-level timetable change history, and a cancelled-class state that survives reimport. See the [full changelog](CHANGELOG.md) for details.
 
 We want a place to keep the instructions that accumulate during a semester: an assignment requirement clarified in class, the chapters included in an exam, or the next experiment agreed at a research meeting. Our planner groups these records by week, keeps them beside the timetable and lets us select what goes into a weekly PDF. Students doing research can use the same workspace for their taught courses and research notes.
 
