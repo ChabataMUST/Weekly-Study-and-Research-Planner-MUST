@@ -1,3 +1,7 @@
+# Week 4 — 1.2.0 — 2026-10-30
+
+Added cross-week note search, immutable note revisions, recurring class entry, class editing with retained links, a time-axis timetable, three interface languages, preset avatars, password settings and in-app help. Existing login, ownership, CSV transactions and PDF versions remain in place. 45 tests pass. See docs/week-04.md for scope boundaries.
+
 # Changelog
 
 All notable changes to this project are documented in this file. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).

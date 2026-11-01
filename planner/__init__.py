@@ -107,7 +107,7 @@ def create_app(config=None):
 
     @app.errorhandler(413)
     def too_large(exc):
-        return render_template('error.html', message='The upload is too large. Use a CSV file smaller than 1 MB.'), 413
+        return render_template('error.html', message='The upload is too large. CSV: 1 MB; images: 10 MB.'), 413
 
     @app.errorhandler(400)
     @app.errorhandler(404)
@@ -388,4 +388,8 @@ def create_app(config=None):
         return send_file(BytesIO(row['pdf']), mimetype='application/pdf', as_attachment=True,
                          download_name=f'weekly-report-{row["week"]}-v{report_id}.pdf')
 
+    from .week4 import install
+    install(app)
+    from .student_tools import install as install_student_tools
+    install_student_tools(app)
     return app

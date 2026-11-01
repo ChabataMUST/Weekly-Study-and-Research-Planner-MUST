@@ -1,52 +1,51 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="intro"><div><p class="eyebrow">STUDY + RESEARCH</p><h1>A week, in one place.</h1><p class="subtitle">Keep class instructions, research notes and progress together.</p></div>
-<a class="button secondary" href="{{ url_for('import_file') }}">Import a timetable</a></div>
-<section class="panel weekbar" aria-label="Week selection">
+<div class="intro"><div><p class="eyebrow">{{ t('STUDY + RESEARCH') }}</p><h1>{{ t('A week, in one place.') }}</h1><p class="subtitle">{{ t('Keep class instructions, research notes and progress together.') }}</p></div>
+<a class="button secondary" href="{{ url_for('import_file') }}">{{ t('Import a timetable') }}</a></div>
+{% include 'quick_note.html' %}<section class="panel weekbar" aria-label="Week selection">
 <a class="arrow" aria-label="Previous week" href="{{ url_for('index',week=previous) }}">←</a>
-<div><strong>{{ start.strftime('%d %B') }} – {{ end.strftime('%d %B %Y') }}</strong><small>Monday to Sunday · Asia/Macau</small></div>
+<div><strong>{{ start.isoformat() }} – {{ end.isoformat() }}</strong><small>{{ t('Monday to Sunday · Asia/Macau') }}</small></div>
 <a class="arrow" aria-label="Next week" href="{{ url_for('index',week=following) }}">→</a>
-<form method="get" class="inline"><label for="week-date">Go to week</label><input id="week-date" name="week" type="date" value="{{ start }}" required><button class="secondary">Open</button></form>
+<a href="{{ url_for('index') }}">{{ t('Today') }}</a><form method="get" class="inline"><label for="week-date">{{ t('Go to week') }}</label><input id="week-date" name="week" type="date" value="{{ start }}" required><button class="secondary">{{ t('Open') }}</button></form>
 </section>
-<div class="metrics"><div class="panel"><span class="metric">{{ events|length }}</span><span>Classes this week</span></div><div class="panel"><span class="metric">{{ notes|length }}</span><span>Learning records</span></div><div class="panel"><span class="metric">{{ completed }} / {{ notes|length }}</span><span>Records marked completed</span></div></div>
-<section class="panel"><div class="sectionhead"><h2>Timetable</h2><span class="quiet">Imported classes</span></div>
-<div class="calendar">{% for day in days %}<div class="day"><div class="dayhead">{{ day.strftime('%a') }} <strong>{{ day.day }}</strong></div>
-{% for event in events if event.date==day.isoformat() %}<article class="event{% if event.state=='cancelled' %} cancelled{% endif %}"><small>{{ event.start_time }}–{{ event.end_time }}</small><strong>{{ event.course_title }}</strong><span>{{ event.room or 'Room not provided' }}</span><span>{{ event.course_code }}</span>{% if event.state=='cancelled' %}<span class="state">Cancelled</span>{% endif %}</article>{% else %}<span class="free">No class</span>{% endfor %}</div>{% endfor %}</div></section>
+<div class="metrics"><div class="panel"><span class="metric">{{ events|length }}</span><span>{{ t('Classes this week') }}</span></div><div class="panel"><span class="metric">{{ notes|length }}</span><span>{{ t('Learning records') }}</span></div><div class="panel"><span class="metric">{{ completed }} / {{ notes|length }}</span><span>{{ t('Records marked completed') }}</span></div></div>
+<section class="panel"><div class="sectionhead"><h2>{{ t('Timetable') }}</h2><a href="{{ url_for('manual_course') }}">{{ t('Add recurring classes') }}</a></div>
+<div class="timeline-scroll"><div class="timeline"><div class="time-axis"><div class="day-label">{{ t('Time') }}</div><div class="time-body">{% for hour in range(0,24) %}<span style="top:{{ hour*64 }}px">{{ '%02d:00'|format(hour) }}</span>{% endfor %}</div></div>{% for day in days %}<div class="time-day"><div class="day-label">{{ t(day.strftime('%a')) }} {{ day.strftime('%m/%d') }}</div><div class="time-body">{% for e in events if e.date==day.isoformat() %}{% set start_min=e.start_time[:2]|int*60+e.start_time[3:]|int %}{% set end_min=e.end_time[:2]|int*60+e.end_time[3:]|int %}<a class="time-event {{ 'is-cancelled' if e.state=='cancelled' }}" href="{{ url_for('class_detail',id=e.id,week=start.isoformat()) }}" data-start="{{ start_min }}" data-end="{{ end_min }}" style="top:{{ start_min/60*64 }}px;height:{{ (end_min-start_min)/60*64 }}px;--event-color:{{ ['#dfe9fd','#fbe2e8','#e3f2e7','#efe4fc','#fff0d1'][e.id%5] }}"><strong>{{ e.course_title }}</strong><small>{{ e.start_time }}–{{ e.end_time }}</small><small>{{ e.room }} · {{ e.teacher }}</small>{% if e.state=='cancelled' %}<small>{{ t('Cancelled') }}</small>{% endif %}</a>{% endfor %}{% for b in plan_blocks if b.date==day.isoformat() %}{% set sm=b.start_time[:2]|int*60+b.start_time[3:]|int %}{% set em=b.end_time[:2]|int*60+b.end_time[3:]|int %}<a class="time-event plan-event" href="{{ url_for('schedule',id=b.id) }}" data-start="{{ sm }}" data-end="{{ em }}" style="top:{{ sm/60*64 }}px;height:{{ (em-sm)/60*64 }}px;--event-color:#fff0c9"><strong>{{ b.title }}</strong><small>{{ b.start_time }}–{{ b.end_time }}</small><small>{{ t('Plan') }}</small></a>{% endfor %}</div></div>{% endfor %}</div></div><script src="{{ url_for('static',filename='calendar.js') }}" defer></script></section>
 <div class="columns">
-<section class="panel"><div class="sectionhead"><h2>Learning records</h2><a href="#add-record">+ Add a record</a></div>
-{% for note in notes %}<article class="note"><div class="notehead"><span class="tag">{{ note.kind }}</span><span class="status {{ 'done' if note.status=='Completed' else '' }}">{{ note.status }}</span></div><h3>{{ note.title }}</h3><p class="quiet">{{ note.date }} · {{ note.project_title or note.course_title or note.context }}</p><p class="note-body">{{ note.body }}</p>{% if note.event_id %}<small class="quiet">Linked to a class on {{ note.date }}</small>{% endif %}</article>
-{% else %}<div class="empty"><h3>Start with what matters this week.</h3><p>Write down an assignment requirement, an exam topic or the next step from a research meeting.</p></div>{% endfor %}
+<section class="panel"><div class="sectionhead"><h2>{{ t('Learning records') }}</h2><a href="#add-record">{{ t('+ Add a record') }}</a></div>
+{% for note in notes %}<article class="note"><div class="notehead"><span class="tag">{{ t(note.kind) }}</span><span class="status {{ 'done' if note.status=='Completed' else '' }}">{{ t(note.status) }}</span></div><h3><a href="{{ url_for('note_detail',id=note.id) }}">{{ note.title }}</a></h3><p class="quiet">{{ note.date }} · {{ note.project_title or note.course_title or note.context }}</p><p class="note-body">{{ note.body }}</p>{% if note.event_id %}<small class="quiet">{{ t('Linked to a class on') }} {{ note.date }}</small>{% endif %}</article>
+{% else %}<div class="empty"><h3>{{ t('Start with what matters this week.') }}</h3><p>{{ t('Write down an assignment requirement, an exam topic or the next step from a research meeting.') }}</p></div>{% endfor %}
 </section>
-<section class="panel report"><p class="eyebrow">WEEKLY REVIEW</p><h2>Make a report</h2><p class="quiet">Choose what to include. Each export is saved as a separate PDF version.</p>
+<section class="panel report"><p class="eyebrow">{{ t('WEEKLY REVIEW') }}</p><h2>{{ t('Make a report') }}</h2><p class="quiet">{{ t('Choose what to include. Each export is saved as a separate PDF version.') }}</p>
 <form action="{{ url_for('export_report') }}" method="post"><input type="hidden" name="csrf" value="{{ session.csrf }}"><input type="hidden" name="week" value="{{ start }}">
-<label for="report-title">Report title</label><input id="report-title" name="title" value="Weekly study and research report" maxlength="200" required>
-<label for="summary">Summary and next steps</label><textarea id="summary" name="summary" rows="5" maxlength="20000" placeholder="What did you finish? What needs attention next week?"></textarea>
-<label class="check"><input type="checkbox" name="include_events" value="yes" checked> Include taught classes</label>
-<fieldset><legend>Records to include</legend>{% for note in notes %}<label class="check"><input type="checkbox" name="note_ids" value="{{ note.id }}" checked> {{ note.title }}</label>{% else %}<p class="quiet">No records in this week. You can still export a summary.</p>{% endfor %}</fieldset>
-<button class="wide">Save and download PDF</button></form>
-{% if reports %}<h3>Saved versions</h3><ul class="versions">{% for report in reports %}<li><a href="{{ url_for('download_report',report_id=report.id) }}">{{ report.title }} · #{{ report.id }}</a><small>{{ report.created_at }} UTC</small></li>{% endfor %}</ul>{% endif %}
+<label for="report-title">{{ t('Report title') }}</label><input id="report-title" name="title" value="{{ t('Weekly study and research report') }}" maxlength="200" required>
+<label for="summary">{{ t('Summary and next steps') }}</label><textarea id="summary" name="summary" rows="5" maxlength="20000" placeholder="{{ t('What did you finish? What needs attention next week?') }}"></textarea>
+<label class="check"><input type="checkbox" name="include_events" value="yes" checked> {{ t('Include taught classes') }}</label>
+<fieldset><legend>{{ t('Records to include') }}</legend>{% for note in notes %}<label class="check"><input type="checkbox" name="note_ids" value="{{ note.id }}" checked> {{ note.title }}</label>{% else %}<p class="quiet">{{ t('No records in this week. You can still export a summary.') }}</p>{% endfor %}</fieldset>
+<button class="wide">{{ t('Save and download PDF') }}</button></form>
+{% if reports %}<h3>{{ t('Saved versions') }}</h3><ul class="versions">{% for report in reports %}<li><a href="{{ url_for('download_report',report_id=report.id) }}">{{ report.title }} · #{{ report.id }}</a><small>{{ report.created_at }} UTC</small></li>{% endfor %}</ul>{% endif %}
 </section></div>
-<section class="panel" id="add-record"><h2>Add a learning record</h2><p class="quiet">A record belongs to a course or a research project. Importing a timetable is optional.</p>
+<section class="panel" id="add-record"><h2>{{ t('Add a learning record') }}</h2><p class="quiet">{{ t('A record belongs to a course or a research project. Importing a timetable is optional.') }}</p>
 <form action="{{ url_for('add_note') }}" method="post"><input type="hidden" name="csrf" value="{{ session.csrf }}">
-<div class="formgrid"><div><label for="record-date">Date</label><input id="record-date" name="date" type="date" value="{{ start }}" required></div><div><label for="kind">Record type</label><select id="kind" name="kind">{% for kind in kinds %}<option>{{ kind }}</option>{% endfor %}</select></div><div><label for="status">Progress</label><select id="status" name="status">{% for status in statuses %}<option>{{ status }}</option>{% endfor %}</select></div></div>
+<div class="formgrid"><div><label for="record-date">{{ t('Date') }}</label><input id="record-date" name="date" type="date" value="{{ start }}" required></div><div><label for="kind">{{ t('Record type') }}</label><select id="kind" name="kind">{% for kind in kinds %}<option value="{{ kind }}">{{ t(kind) }}</option>{% endfor %}</select></div><div><label for="status">{{ t('Progress') }}</label><select id="status" name="status">{% for status in statuses %}<option value="{{ status }}">{{ t(status) }}</option>{% endfor %}</select></div></div>
 <div class="formgrid two">
-<div><label for="course-id">Course</label>
+<div><label for="course-id">{{ t('Course') }}</label>
 <select id="course-id" name="course_id">
-<option value="">Choose a course…</option>
+<option value="">{{ t('Choose a course…') }}</option>
 {% for course in courses %}<option value="{{ course.id }}">{{ course.title }} · {{ course.code }}</option>{% endfor %}
 </select>
-<input name="new_course" maxlength="200" placeholder="…or name a new course">
+<input name="new_course" maxlength="200" placeholder="{{ t('…or name a new course') }}">
 </div>
-<div><label for="project-id">Research project</label>
+<div><label for="project-id">{{ t('Research project') }}</label>
 <select id="project-id" name="project_id">
-<option value="">Choose a project…</option>
+<option value="">{{ t('Choose a project…') }}</option>
 {% for project in projects %}<option value="{{ project.id }}">{{ project.title }}</option>{% endfor %}
 </select>
-<input name="new_project" maxlength="200" placeholder="…or name a new project">
+<input name="new_project" maxlength="200" placeholder="{{ t('…or name a new project') }}">
 </div>
 </div>
-<p class="quiet">Pick one course <em>or</em> one project. A research student with no taught timetable can name a project and use the planner without importing a timetable.</p>
-<div class="formgrid two"><div><label for="record-title">Title</label><input id="record-title" name="title" maxlength="200" required placeholder="e.g. Requirements report: teacher's instructions"></div>
-<div><label for="event-id">Link a class (optional)</label><select id="event-id" name="event_id"><option value="">No linked class</option>{% for e in events %}<option value="{{ e.id }}">{{ e.date }} · {{ e.course_title }}</option>{% endfor %}</select></div></div>
-<label for="body">Details</label><textarea id="body" name="body" rows="5" maxlength="20000" required placeholder="Keep the full instructions, scope or meeting decisions here."></textarea><button>Save record</button></form></section>
+<p class="quiet">{{ t('Pick one course') }} <em>{{ t('or') }}</em> {{ t('one project. A research student with no taught timetable can name a project and use the planner without importing a timetable.') }}</p>
+<div class="formgrid two"><div><label for="record-title">{{ t('Title') }}</label><input id="record-title" name="title" maxlength="200" required placeholder="{{ t("e.g. Requirements report: teacher's instructions") }}"></div>
+<div><label for="event-id">{{ t('Link a class (optional)') }}</label><select id="event-id" name="event_id"><option value="">{{ t('No linked class') }}</option>{% for e in events %}<option value="{{ e.id }}">{{ e.date }} · {{ e.course_title }}</option>{% endfor %}</select></div></div>
+<label for="body">{{ t('Details') }}</label><textarea id="body" name="body" rows="5" maxlength="20000" required placeholder="{{ t('Keep the full instructions, scope or meeting decisions here.') }}"></textarea><button>{{ t('Save record') }}</button></form></section>
 {% endblock %}

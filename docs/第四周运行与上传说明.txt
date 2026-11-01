@@ -1,0 +1,47 @@
+﻿第四周版本：运行、检查与上传说明
+
+项目位置：D:\学生生活项目创意\Weekly-Planner-W04
+本版本基于 GitHub 最新第三周代码 5664920，未向远程仓库上传任何内容。
+
+一、启动
+1. 打开上述文件夹，确认同一层有 run.py、setup.cmd、start.cmd、planner 等文件。
+2. 第一次运行先双击 setup.cmd，等待依赖安装完成；需要联网。之后双击 start.cmd。
+3. 保持终端打开，在浏览器访问 http://127.0.0.1:5000。
+4. 注册账号并登录。新文件夹默认没有旧数据，这是独立开发副本。
+5. 若 CMD 报错，先确认当前文件夹，再运行：
+   cd /d "D:\学生生活项目创意\Weekly-Planner-W04"
+   setup.cmd
+   start.cmd
+   端口被占用时，先关闭原来运行服务器的终端。不要直接双击 HTML 文件。
+
+二、保留第三周个人数据
+关闭两个版本的服务器，先把第三周的整个 instance 文件夹另存为备份，再将其复制到本版本根目录。不要覆盖一个已经使用过、已有新记录的 instance 文件夹。新版本会增加偏好与备注历史表，保留原有记录。需要回退时使用旧代码和原始备份，不要删除旧数据库。
+
+三、体验顺序
+1. Settings → Language 选择简体中文或繁體中文，选择头像后保存。
+2. 在课表右上角点击“手动添加周期课程”。填写课程代码、名称、起止时间、开始日期、上课日和持续周数。若填写截止日期，则以截止日期为准。预览后确认。
+3. 周课表按时间位置显示课程。点击课程可查看信息和相关记录，使用“课程修改”调整单次课程。课程名称会同步更新，时间/教室/取消状态仅修改当前这次。
+4. 在首页添加学习记录，选择课程或项目。点击记录标题，修改内容并填写原因，保存后可以展开历史版本。
+5. 顶部“检索”支持跨周关键词、课程及项目筛选。历史版本中的关键词也可找到记录。
+6. 周报继续从对应周导出；修改备注不会改变先前保存的 PDF。
+7. 设置中修改密码需要输入当前密码。头像目前为预设图标，不是照片上传。
+
+四、CSV 规则
+CSV 仍支持预览、确认和取消。修改已有课程请保持 source_key 不变。新 key 作为新课程，缺失行会保留，不是全量覆盖。截图暂不支持自动识别。可以直接使用手动周期排课。
+
+五、与组员协作并上传 GitHub
+建议使用 GitHub Desktop。选择 File → Add local repository，选中上述 Weekly-Planner-W04 文件夹（该文件夹已保留仓库关联）。
+1. 先 Fetch origin。若提示远程还有组员的新提交，先与你的组员核对并合并，不要强制覆盖。
+2. 在 Changes 中检查修改。不要勾选 instance、.venv、数据库、secret.key 或个人周报。本版本 .gitignore 已排除这些文件。
+3. 建议新建分支 week04-retrieval-and-timetable，再提交。
+4. Commit 标题可用：Add Week 4 record history, search and timetable management。
+5. Publish branch / Push origin，创建 Pull Request 供组员检查，再合并到主分支。
+
+若使用网页上传：先解压交付 ZIP，进入 Weekly-Planner-W04 文件夹，上传里面的文件和子文件夹到仓库根目录，不要再套一层同名文件夹。Git 上传更适合保留组员协作历史。上传前与组员确认没有未合并的新工作。
+
+六、验证
+在项目根目录运行：
+   .venv\Scripts\python.exe -m pip install -r requirements-dev.txt
+   .venv\Scripts\python.exe -m unittest discover -s tests -v
+本次检查为45项通过。结果见 docs/test-results-week04.txt；第三周核对见 docs/week-03-audit.md。
+飞书小周报在 reports/Week-04-Feishu.txt，可根据实际分工调整后粘贴。无需上传个人数据库。
