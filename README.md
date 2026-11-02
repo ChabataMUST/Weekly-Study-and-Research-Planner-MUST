@@ -1,4 +1,13 @@
-# Weekly Study and Research Planner
+# Week 2 | CSV import and weekly PDF reports
+
+We released a code package in Week 1 and another in Week 2. When we uploaded the Week 2 package, we accidentally overwrote the Week 1 package. The surviving v1.0.0 snapshot is the runnable code for this branch.
+
+## Import review on the web
+
+![CSV import preview](docs/images/import-preview.png)
+
+Check the proposed additions and updates before confirming. Reimporting the same rows should leave the timetable unchanged.
+
 
 Software Engineering · Macau University of Science and Technology  
 Team: ChabataMUST · ZhaoYue (赵玥) and WangYule (王宇乐)  
